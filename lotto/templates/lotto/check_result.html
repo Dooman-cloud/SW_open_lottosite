@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>당첨 확인</title>
+</head>
+<body>
+    <h1>당첨 확인</h1>
+
+    <p>구매 번호를 입력하면 최신 추첨 결과를 기준으로 당첨 여부를 확인합니다.</p>
+
+    {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">당첨 확인하기</button>
+    </form>
+
+    <hr>
+
+    <p>
+        <a href="{% url 'lotto:home' %}">메인으로 돌아가기</a>
+    </p>
+</body>
+</html>

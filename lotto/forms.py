@@ -49,3 +49,8 @@ class DrawForm(forms.Form):
         label="추첨 회차",
         min_value=1
     )
+
+class CheckResultForm(forms.Form):
+    ticket_id = forms.IntegerField(
+        label="구매 id",
+        min_value=1)

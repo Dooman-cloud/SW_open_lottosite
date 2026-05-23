@@ -15,7 +15,7 @@
     <ul>
         <li><a href="{% url 'lotto:buy_manual' %}">수동 번호 구매</a></li>
         <li><a href="{% url 'lotto:buy_auto' %}">자동 번호 구매</a></li>
-        <li>당첨 확인</li>
+        <li><a href="{% url 'lotto:check_result' %}">당첨 확인</a></li>
     </ul>
 
     <h2>관리자 기능</h2>
@@ -23,6 +23,7 @@
         <li><a href="/admin/">판매 내역 확인</a></li>
         <li><a href="{% url 'lotto:admin_draw' %}">추첨 기능</a></li>
         <li><a href="{% url 'lotto:draw_list' %}">추첨 결과 확인</a></li>
+        <li><a href="{% url 'lotto:winning_result_list' %}">당첨 내역 확인</a></li>
     </ul>
 </body>
 </html>

@@ -10,4 +10,6 @@ urlpatterns = [
     path('tickets/<int:ticket_id>/', views.ticket_detail, name='ticket_detail'),
     path('staff/draw/', views.admin_draw, name='admin_draw'), #관리자 추첨 기능 추가
     path('draws/', views.draw_list, name='draw_list'), #추첨 회차 목록 페이지 추가
+    path('check/', views.check_result, name='check_result'),
+    path('staff/results/', views.winning_result_list, name='winning_result_list'),
 ]

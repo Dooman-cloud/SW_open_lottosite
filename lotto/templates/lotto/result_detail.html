@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>당첨 결과</title>
+</head>
+<body>
+    <h1>당첨 결과</h1>
+
+    <h2>구매 정보</h2>
+    <p><strong>구매 id:</strong> {{ ticket.id }}</p>
+    <p><strong>구매자:</strong> {{ ticket.buyer_name }}</p>
+    <p><strong>구매 방식:</strong> {{ ticket.get_purchase_type_display }}</p>
+
+    <p>
+        <strong>구매 번호:</strong>
+        {% for number in ticket_numbers %}
+            {{ number }}
+        {% endfor %}
+    </p>
+
+    <hr>
+
+    <h2>추첨 정보</h2>
+    <p><strong>회차:</strong> {{ draw.round_no }}회차</p>
+
+    <p>
+        <strong>당첨 번호:</strong>
+        {% for number in winning_numbers %}
+            {{ number }}
+        {% endfor %}
+    </p>
+
+    <p><strong>보너스 번호:</strong> {{ draw.bonus_number }}</p>
+
+    <hr>
+
+    <h2>결과</h2>
+    <p><strong>일치 개수:</strong> {{ result.matched_count }}개</p>
+    <p><strong>보너스 번호 일치:</strong> {{ result.bonus_matched }}</p>
+    <p><strong>당첨 등수:</strong> {{ result.rank }}</p>
+
+    {% if created %}
+        <p>새로운 당첨 결과가 저장되었습니다.</p>
+    {% else %}
+        <p>기존 당첨 결과가 업데이트되었습니다.</p>
+    {% endif %}
+
+    <hr>
+
+    <p>
+        <a href="{% url 'lotto:check_result' %}">다른 구매 번호 확인하기</a>
+    </p>
+
+    <p>
+        <a href="{% url 'lotto:home' %}">메인으로 돌아가기</a>
+    </p>
+</body>
+</html>

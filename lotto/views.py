@@ -1,10 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.admin.views.decorators import staff_member_required
 
-from .forms import ManualTicketForm, AutoTicketForm, DrawForm
-from .models import Ticket, Draw
-from .services import generate_lotto_numbers, generate_draw_numbers
-
+from .forms import ManualTicketForm, AutoTicketForm, DrawForm, CheckResultForm
+from .models import Ticket, Draw, WinningResult
+from .services import (
+    generate_lotto_numbers,
+    generate_draw_numbers,
+    calculate_rank,
+    get_ticket_numbers,
+    get_draw_numbers,
+)
 
 def home(request):
     return render(request, 'lotto/home.html')
@@ -125,3 +130,85 @@ def draw_list(request):
     draws = Draw.objects.all().order_by("-round_no")
 
     return render(request, "lotto/draw_list.html", {"draws": draws})
+
+#당첨확인 서비스 - 사용자가 구매 번호 입력 -> 가장 최신 추첨 회차 기준으로 당첨 확인 -> 결과 저장 및 상세 페이지로 이동
+def check_result(request):
+    if request.method == "POST":
+        form = CheckResultForm(request.POST)
+
+        if form.is_valid():
+            ticket_id = form.cleaned_data["ticket_id"]
+
+            try:
+                ticket = Ticket.objects.get(id=ticket_id)
+            except Ticket.DoesNotExist:
+                return render(
+                    request,
+                    "lotto/check_result.html",
+                    {
+                        "form": form,
+                        "error_message": "해당 구매 id의 티켓이 존재하지 않습니다.",
+                    },
+                )
+
+            # 현재는 가장 최신 추첨 회차 기준으로 당첨 확인
+            latest_draw = Draw.objects.order_by("-round_no").first()
+
+            if latest_draw is None:
+                return render(
+                    request,
+                    "lotto/check_result.html",
+                    {
+                        "form": form,
+                        "error_message": "아직 추첨 결과가 없습니다. 관리자 추첨을 먼저 실행해주세요.",
+                    },
+                )
+
+            ticket_numbers = get_ticket_numbers(ticket)
+            winning_numbers = get_draw_numbers(latest_draw)
+
+            matched_count, bonus_matched, rank = calculate_rank(
+                ticket_numbers,
+                winning_numbers,
+                latest_draw.bonus_number,
+            )
+
+            result, created = WinningResult.objects.update_or_create(
+                ticket=ticket,
+                defaults={
+                    "draw": latest_draw,
+                    "matched_count": matched_count,
+                    "bonus_matched": bonus_matched,
+                    "rank": rank,
+                },
+            )
+
+            return render(
+                request,
+                "lotto/result_detail.html",
+                {
+                    "ticket": ticket,
+                    "draw": latest_draw,
+                    "ticket_numbers": ticket_numbers,
+                    "winning_numbers": winning_numbers,
+                    "result": result,
+                    "created": created,
+                },
+            )
+    else:
+        form = CheckResultForm()
+
+    return render(request, "lotto/check_result.html", {"form": form})
+
+
+@staff_member_required
+def winning_result_list(request):
+    results = WinningResult.objects.select_related("ticket", "draw").order_by(
+        "-checked_at"
+    )
+
+    return render(
+        request,
+        "lotto/winning_result_list.html",
+        {"results": results},
+    )
