@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>자동 번호 구매</title>
+</head>
+<body>
+    <h1>자동 번호 구매</h1>
+
+    <p>구매자 이름을 입력하면 1~45 사이의 번호 6개가 자동 생성됩니다.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">자동 구매하기</button>
+    </form>
+
+    <p>
+        <a href="{% url 'lotto:home' %}">메인으로 돌아가기</a>
+    </p>
+</body>
+</html>

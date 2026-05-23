@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>수동 번호 구매</title>
+</head>
+<body>
+    <h1>수동 번호 구매</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">구매하기</button>
+    </form>
+
+    <p>
+        <a href="{% url 'lotto:home' %}">메인으로 돌아가기</a>
+    </p>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>구매 완료</title>
+</head>
+<body>
+    <h1>구매 완료</h1>
+
+    <p><strong>구매 번호:</strong> {{ ticket.id }}</p>
+    <p><strong>구매자:</strong> {{ ticket.buyer_name }}</p>
+    <p><strong>구매 방식:</strong> {{ ticket.get_purchase_type_display }}</p>
+    <p><strong>선택 번호:</strong>
+        {% for number in numbers %}
+            {{ number }}
+        {% endfor %}
+    </p>
+    <p><strong>구매 일시:</strong> {{ ticket.created_at }}</p>
+
+    <hr>
+
+    <p>
+        <a href="{% url 'lotto:home' %}">메인으로 돌아가기</a>
+    </p>
+</body>
+</html>

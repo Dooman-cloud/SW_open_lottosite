@@ -7,14 +7,14 @@
 <body>
     <h1>6/45 Lotto 웹 사이트</h1>
 
-    <p>Django와 Docker를 사용하여 만든 로또 웹 사이트 과제</p>
+    <p>Django와 Docker를 사용하여 만든 로또 웹 서비스입니다.</p>
 
     <hr>
 
     <h2>일반 사용자 기능</h2>
     <ul>
-        <li>수동 번호 구매</li>
-        <li>자동 번호 구매</li>
+        <li><a href="{% url 'lotto:buy_manual' %}">수동 번호 구매</a></li>
+        <li><a href="{% url 'lotto:buy_auto' %}">자동 번호 구매</a></li>
         <li>당첨 확인</li>
     </ul>
 

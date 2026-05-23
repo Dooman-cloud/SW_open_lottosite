@@ -40,20 +40,21 @@ Django와 Docker를 사용하여 구현하는 6/45 Lotto 웹 사이트 과제
 ## 프로젝트 구조
 
 ```text
-SW_open_lottosite/
+open_source_lotto/
 ├─ manage.py
 ├─ lotto_project/
 │  ├─ settings.py
 │  ├─ urls.py
 │  └─ ...
 ├─ lotto/
+│  ├─ admin.py
 │  ├─ models.py
 │  ├─ views.py
 │  ├─ urls.py
-│  ├─ templates/
-│  │  └─ lotto/
-│  │     └─ home.html
-│  └─ ...
+│  ├─ forms.py
+│  ├─ services.py
+│  └─ templates/
 ├─ requirements.txt
+├─ README.md
 ├─ .gitignore
-└─ README.md
+└─ venv/
