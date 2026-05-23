@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>추첨 결과 목록</title>
+</head>
+<body>
+    <h1>추첨 결과 목록</h1>
+
+    {% if draws %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>회차</th>
+                    <th>당첨번호</th>
+                    <th>보너스 번호</th>
+                    <th>추첨 일시</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for draw in draws %}
+                    <tr>
+                        <td>{{ draw.round_no }}</td>
+                        <td>
+                            {{ draw.number1 }},
+                            {{ draw.number2 }},
+                            {{ draw.number3 }},
+                            {{ draw.number4 }},
+                            {{ draw.number5 }},
+                            {{ draw.number6 }}
+                        </td>
+                        <td>{{ draw.bonus_number }}</td>
+                        <td>{{ draw.drawn_at }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>아직 추첨 결과가 없습니다.</p>
+    {% endif %}
+
+    <hr>
+
+    <p>
+        <a href="{% url 'lotto:admin_draw' %}">추첨 실행하기</a>
+    </p>
+
+    <p>
+        <a href="{% url 'lotto:home' %}">메인으로 돌아가기</a>
+    </p>
+</body>
+</html>

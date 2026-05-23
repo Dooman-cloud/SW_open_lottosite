@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import ManualTicketForm, AutoTicketForm
-from .models import Ticket
-from .services import generate_lotto_numbers
+from django.contrib.admin.views.decorators import staff_member_required
+
+from .forms import ManualTicketForm, AutoTicketForm, DrawForm
+from .models import Ticket, Draw
+from .services import generate_lotto_numbers, generate_draw_numbers
 
 
 def home(request):
@@ -74,3 +76,52 @@ def ticket_detail(request, ticket_id):
     }
 
     return render(request, "lotto/ticket_detail.html", context)
+
+@staff_member_required
+
+
+def admin_draw(request):
+    """
+admin_draw
+- 관리자만 접근 가능
+- 회차 번호 입력
+- 중복 회차 검사
+- 당첨번호/보너스 번호 생성
+- Draw 모델에 저장 후 draw_list로 리다이렉트
+draw_list
+- 저장된 추첨 결과 목록 표시
+"""
+    if request.method == "POST":
+        form = DrawForm(request.POST)
+
+        if form.is_valid():
+            round_no = form.cleaned_data["round_no"]
+
+            if Draw.objects.filter(round_no=round_no).exists():
+                form.add_error("round_no", "이미 존재하는 회차입니다.")
+            else:
+                winning_numbers, bonus_number = generate_draw_numbers()
+
+                draw = Draw.objects.create(
+                    round_no=round_no,
+                    number1=winning_numbers[0],
+                    number2=winning_numbers[1],
+                    number3=winning_numbers[2],
+                    number4=winning_numbers[3],
+                    number5=winning_numbers[4],
+                    number6=winning_numbers[5],
+                    bonus_number=bonus_number,
+                )
+
+                return redirect("lotto:draw_list")
+    else:
+        form = DrawForm()
+
+    return render(request, "lotto/admin_draw.html", {"form": form})
+
+
+@staff_member_required
+def draw_list(request):
+    draws = Draw.objects.all().order_by("-round_no")
+
+    return render(request, "lotto/draw_list.html", {"draws": draws})

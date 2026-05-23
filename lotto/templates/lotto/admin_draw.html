@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 추첨</title>
+</head>
+<body>
+    <h1>관리자 추첨 기능</h1>
+
+    <p>추첨 회차를 입력하면 1~45 사이의 당첨번호 6개와 보너스 번호 1개가 자동 생성됩니다.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">추첨 실행</button>
+    </form>
+
+    <hr>
+
+    <p>
+        <a href="{% url 'lotto:draw_list' %}">추첨 결과 목록 보기</a>
+    </p>
+
+    <p>
+        <a href="{% url 'lotto:home' %}">메인으로 돌아가기</a>
+    </p>
+</body>
+</html>

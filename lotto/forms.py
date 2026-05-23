@@ -42,3 +42,10 @@ class AutoTicketForm(forms.Form):
         max_length=50,
         label="구매자 이름"
     )
+
+
+class DrawForm(forms.Form):
+    round_no = forms.IntegerField(
+        label="추첨 회차",
+        min_value=1
+    )

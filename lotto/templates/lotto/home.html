@@ -20,9 +20,9 @@
 
     <h2>관리자 기능</h2>
     <ul>
-        <li>판매 내역 확인</li>
-        <li>추첨 기능</li>
-        <li>당첨 내역 확인</li>
+        <li><a href="/admin/">판매 내역 확인</a></li>
+        <li><a href="{% url 'lotto:admin_draw' %}">추첨 기능</a></li>
+        <li><a href="{% url 'lotto:draw_list' %}">추첨 결과 확인</a></li>
     </ul>
 </body>
 </html>
